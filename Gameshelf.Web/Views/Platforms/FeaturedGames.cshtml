@@ -1,0 +1,97 @@
+@model IEnumerable<GameShelf.Models.ViewModels.LiveDeals.LiveDealDto>
+@{
+    ViewData["Title"] = "Featured Games";
+    var currentPage = (int)(ViewData["CurrentPage"] ?? 1);
+    var totalPages = (int)(ViewData["TotalPages"] ?? 1);
+    var totalDeals = (int)(ViewData["TotalDeals"] ?? 0);
+    var dealCount = Model?.Count() ?? 0;
+}
+
+<div class="mb-4">
+    <h1 class="gs-page-title">⭐ Featured Games</h1>
+    <p class="gs-page-subtitle">
+        @if (totalDeals > 0)
+        {
+            <span>@totalDeals games with community verdicts — sorted by Buy Now % → Wait % → Not Worth It %</span>
+        }
+        else
+        {
+            <span>Games with community verdicts (sorted by Buy Now %, then Wait %, then Not Worth It %)</span>
+        }
+    </p>
+</div>
+
+@if (dealCount == 0)
+{
+    <div class="gs-empty-state">
+        <div class="gs-empty-icon">⏳</div>
+        <h5>Loading deals...</h5>
+        <p class="text-muted mb-2">Deals are being loaded in the background. Please refresh in a few seconds.</p>
+        <button onclick="location.reload()" class="btn btn-primary">Refresh</button>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-4">
+        @foreach (var deal in Model!)
+        {
+            @await Html.PartialAsync("_DealCard", deal)
+        }
+    </div>
+
+    @* Pagination *@
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Featured games pagination">
+            <ul class="pagination justify-content-center">
+                @* Previous button *@
+                <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="FeaturedGames" asp-route-page="@(currentPage - 1)">Previous</a>
+                </li>
+
+                @* Page numbers *@
+                @{
+                    var startPage = Math.Max(1, currentPage - 2);
+                    var endPage = Math.Min(totalPages, currentPage + 2);
+                    
+                    if (startPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="FeaturedGames" asp-route-page="1">1</a>
+                        </li>
+                        if (startPage > 2)
+                        {
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        }
+                    }
+                    
+                    for (var i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" asp-action="FeaturedGames" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+                    
+                    if (endPage < totalPages)
+                    {
+                        if (endPage < totalPages - 1)
+                        {
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link" asp-action="FeaturedGames" asp-route-page="@totalPages">@totalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Next button *@
+                <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="FeaturedGames" asp-route-page="@(currentPage + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <p class="text-center text-muted small">Page @currentPage of @totalPages</p>
+    }
+}
+
+<a asp-action="Index" class="gs-back-link">← Back to platforms</a>

@@ -1,0 +1,74 @@
+@model IEnumerable<GameShelf.Models.ViewModels.LiveDeals.LiveDealDto>
+@{
+    ViewData["Title"] = "Search Results";
+    var query = ViewData["Query"] as string ?? "";
+    var currentPage = (int)(ViewData["CurrentPage"] ?? 1);
+    var totalPages = (int)(ViewData["TotalPages"] ?? 0);
+    var totalDeals = (int)(ViewData["TotalDeals"] ?? 0);
+}
+
+<div class="container">
+    <div class="mb-4">
+        <h2 class="gs-page-title">Search Results</h2>
+        @if (!string.IsNullOrWhiteSpace(query))
+        {
+            <p class="gs-page-subtitle">Found <strong>@totalDeals</strong> deals matching "<strong>@query</strong>"</p>
+        }
+        else
+        {
+            <p class="gs-page-subtitle">Enter a search term to find games</p>
+        }
+    </div>
+
+    @if (string.IsNullOrWhiteSpace(query))
+    {
+        <div class="alert alert-info">
+            <p>Please enter a search term to find games across all platforms.</p>
+        </div>
+    }
+    else if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            <p>No deals found matching "<strong>@query</strong>". Try a different search term.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4 mb-4">
+            @foreach (var deal in Model)
+            {
+                @await Html.PartialAsync("_DealCard", deal)
+            }
+        </div>
+
+        @if (totalPages > 1)
+        {
+            <nav aria-label="Search results pagination">
+                <ul class="pagination justify-content-center">
+                    @if (currentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Search" asp-route-query="@query" asp-route-page="@(currentPage - 1)">Previous</a>
+                        </li>
+                    }
+                    @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Search" asp-route-query="@query" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+                    @if (currentPage < totalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Search" asp-route-query="@query" asp-route-page="@(currentPage + 1)">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Home" asp-action="Index" class="gs-back-link">← Back to Home</a>
+    </div>
+</div>

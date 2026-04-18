@@ -1,0 +1,45 @@
+@model GameShelf.Models.ViewModels.GameDeals.GameDealViewModel
+@{
+    ViewData["Title"] = "Delete Custom Deal";
+}
+
+<div class="container">
+    <h1 class="gs-page-title text-danger">Delete Custom Deal</h1>
+    <p class="gs-page-subtitle">Are you sure you want to delete this deal?</p>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Platform</dt>
+                <dd class="col-sm-9">@Model.PlatformName</dd>
+
+                <dt class="col-sm-3">Price</dt>
+                <dd class="col-sm-9">$@Model.Price.ToString("F2") USD</dd>
+
+                @if (Model.OriginalPrice.HasValue)
+                {
+                    <dt class="col-sm-3">Original Price</dt>
+                    <dd class="col-sm-9">$@Model.OriginalPrice.Value.ToString("F2") USD</dd>
+                }
+
+                @if (Model.DiscountPercent.HasValue)
+                {
+                    <dt class="col-sm-3">Discount</dt>
+                    <dd class="col-sm-9">@Model.DiscountPercent%</dd>
+                }
+            </dl>
+
+            <form asp-action="DeleteDeal" asp-route-id="@Model.Id" method="post">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a asp-action="CustomDeals" asp-route-id="@Model.PlatformId" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <a asp-action="CustomDeals" asp-route-id="@Model.PlatformId" class="gs-back-link">← Back to custom deals</a>
+</div>

@@ -1,0 +1,116 @@
+@model IEnumerable<GameShelf.Models.ViewModels.GameDeals.GameDealViewModel>
+@{
+    ViewData["Title"] = "Custom Deals - " + (ViewData["PlatformName"] ?? "Platform");
+    var platformId = (Guid)ViewData["PlatformId"]!;
+    var platformName = ViewData["PlatformName"] as string ?? "Platform";
+}
+
+<div class="container">
+    <h1 class="gs-page-title">Custom Deals — @platformName</h1>
+    <p class="gs-page-subtitle">Manage manually added game deals for this platform</p>
+
+    @if (TempData["DealCreateSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["DealCreateSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["DealEditSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["DealEditSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["DealDeleteSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["DealDeleteSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <p class="mb-4">
+        <a asp-action="CreateDeal" asp-route-platformId="@platformId" class="btn btn-primary">Add Custom Deal</a>
+        <a asp-action="Deals" asp-route-id="@platformId" class="btn btn-outline-secondary ms-2">View Live Deals</a>
+        <a asp-action="Details" asp-route-id="@platformId" class="btn btn-outline-secondary ms-2">Platform Details</a>
+    </p>
+
+    @if (!Model.Any())
+    {
+        <div class="gs-empty-state">
+            <div class="gs-empty-icon">📦</div>
+            <h5>No custom deals yet</h5>
+            <p class="text-muted mb-3">Add your own game deals to display alongside live deals.</p>
+            <a asp-action="CreateDeal" asp-route-platformId="@platformId" class="btn btn-primary">Add First Deal</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price (USD)</th>
+                        <th>Original (USD)</th>
+                        <th>Discount</th>
+                        <th>Image</th>
+                        <th>Deal URL</th>
+                        <th>Order</th>
+                        <th>Active</th>
+                        <th>Available</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var deal in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@deal.Name</strong>
+                                @if (!string.IsNullOrEmpty(deal.Description))
+                                {
+                                    <br /><small class="text-muted">@(deal.Description.Length > 50 ? deal.Description.Substring(0, 50) + "..." : deal.Description)</small>
+                                }
+                            </td>
+                            <td>$@deal.Price.ToString("F2")</td>
+                            <td>@(deal.OriginalPrice.HasValue ? "$" + deal.OriginalPrice.Value.ToString("F2") : "—")</td>
+                            <td>@(deal.DiscountPercent.HasValue ? deal.DiscountPercent + "%" : "—")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(deal.ImageUrl))
+                                {
+                                    <a href="@deal.ImageUrl" target="_blank" rel="noopener">View</a>
+                                }
+                                else
+                                {
+                                    <text>—</text>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(deal.DealUrl))
+                                {
+                                    <a href="@deal.DealUrl" target="_blank" rel="noopener">Link</a>
+                                }
+                                else
+                                {
+                                    <text>—</text>
+                                }
+                            </td>
+                            <td>@deal.DisplayOrder</td>
+                            <td>@(deal.IsActive ? "✓" : "—")</td>
+                            <td>@(deal.IsAvailable ? "✓" : "—")</td>
+                            <td>
+                                <a asp-action="EditDeal" asp-route-id="@deal.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a asp-action="DeleteDeal" asp-route-id="@deal.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <a asp-action="Details" asp-route-id="@platformId" class="gs-back-link mt-3">← Back to platform</a>
+</div>

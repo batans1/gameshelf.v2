@@ -1,0 +1,27 @@
+2026-02-21 18:16:14.085 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-21 18:16:17.121 +02:00 [INF] Starting live deals sync to database...
+2026-02-21 18:16:17.126 +02:00 [INF] Starting sync for platform: Steam
+2026-02-21 18:16:23.534 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-21 18:16:23.580 +02:00 [INF] Removing 1 expired deals for Steam
+2026-02-21 18:16:24.063 +02:00 [INF] Synced 900 deals for Steam. Removed 1 expired.
+2026-02-21 18:16:24.670 +02:00 [INF] Starting sync for platform: GOG
+2026-02-21 18:16:30.967 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-21 18:16:31.248 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-21 18:16:31.855 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-21 18:16:38.146 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-21 18:16:38.180 +02:00 [INF] Removing 1 expired deals for Epic Games
+2026-02-21 18:16:38.338 +02:00 [INF] Synced 900 deals for Epic Games. Removed 1 expired.
+2026-02-21 18:16:38.951 +02:00 [INF] Live deals sync completed successfully.
+2026-02-21 18:16:45.383 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-02-21 18:30:34.926 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-21 18:30:37.972 +02:00 [INF] Starting live deals sync to database...
+2026-02-21 18:30:37.976 +02:00 [INF] Starting sync for platform: Steam
+2026-02-21 18:30:44.374 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-21 18:30:44.835 +02:00 [INF] Synced 900 deals for Steam. Removed 0 expired.
+2026-02-21 18:30:45.452 +02:00 [INF] Starting sync for platform: GOG
+2026-02-21 18:30:51.774 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-21 18:30:52.013 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-21 18:30:52.618 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-21 18:30:58.909 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-21 18:30:59.048 +02:00 [INF] Synced 900 deals for Epic Games. Removed 0 expired.
+2026-02-21 18:30:59.660 +02:00 [INF] Live deals sync completed successfully.

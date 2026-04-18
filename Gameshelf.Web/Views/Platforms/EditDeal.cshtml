@@ -1,0 +1,93 @@
+@model GameShelf.Models.ViewModels.GameDeals.GameDealCreateOrEditViewModel
+@{
+    ViewData["Title"] = "Edit Custom Deal - " + (ViewData["PlatformName"] ?? "Platform");
+    var platformName = ViewData["PlatformName"] as string ?? "Platform";
+    var dealId = (Guid)ViewData["DealId"]!;
+}
+
+<div class="container">
+    <h1 class="gs-page-title">Edit Custom Deal</h1>
+    <p class="gs-page-subtitle">@platformName</p>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="EditDeal" asp-route-id="@dealId" method="post">
+                <input type="hidden" asp-for="PlatformId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Game name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Optional description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PriceUsd" class="form-label"></label>
+                        <input asp-for="PriceUsd" class="form-control" type="number" step="0.01" min="0" />
+                        <small class="form-text text-muted">Price in USD</small>
+                        <span asp-validation-for="PriceUsd" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="OriginalPriceUsd" class="form-label"></label>
+                        <input asp-for="OriginalPriceUsd" class="form-control" type="number" step="0.01" min="0" placeholder="Optional" />
+                        <small class="form-text text-muted">Original price in USD (discount will be auto-calculated)</small>
+                        <span asp-validation-for="OriginalPriceUsd" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ImageUrl" class="form-label"></label>
+                        <input asp-for="ImageUrl" class="form-control" type="url" placeholder="https://example.com/image.jpg" />
+                        <small class="form-text text-muted">Game thumbnail image URL</small>
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DealUrl" class="form-label"></label>
+                        <input asp-for="DealUrl" class="form-control" type="url" placeholder="https://example.com/deal" />
+                        <small class="form-text text-muted">Link to the deal page</small>
+                        <span asp-validation-for="DealUrl" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="DisplayOrder" class="form-label"></label>
+                        <input asp-for="DisplayOrder" class="form-control" type="number" min="0" />
+                        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 d-flex align-items-end">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsAvailable" class="form-check-input" />
+                            <label asp-for="IsAvailable" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="CustomDeals" asp-route-id="@Model.PlatformId" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <a asp-action="CustomDeals" asp-route-id="@Model.PlatformId" class="gs-back-link mt-3 d-inline-block">← Back to custom deals</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

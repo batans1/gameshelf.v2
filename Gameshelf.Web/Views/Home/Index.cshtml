@@ -1,0 +1,66 @@
+@model IEnumerable<GameShelf.Models.ViewModels.Platforms.PlatformViewModel>
+@{
+    ViewData["Title"] = "Home";
+    // Map platform names to display names for the home page
+    var platformMap = Model?.ToDictionary(p => p.Name, p => p, StringComparer.OrdinalIgnoreCase) ?? new Dictionary<string, GameShelf.Models.ViewModels.Platforms.PlatformViewModel>();
+}
+
+<div class="gs-hero" style="background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.6)), url('/images/hero-bg.jpg?v=@(ViewBag.HeroImageVersion)');">
+    <div class="container">
+        <h1>🎮 Find the Best Game Deals</h1>
+        <p class="lead">Compare discounts from Steam, GOG, and Epic Games in one place. Rate games to help others discover amazing deals!</p>
+        <form asp-controller="Platforms" asp-action="Search" method="get" class="mb-4">
+            <div class="row g-2 justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="input-group input-group-lg">
+                        <input type="text" name="query" class="form-control" placeholder="Search for games..." value="@ViewData["SearchQuery"]" />
+                        <button class="btn btn-primary" type="submit">🔍 Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="d-flex flex-wrap gap-3">
+            <a asp-controller="Platforms" asp-action="FeaturedGames" class="btn btn-primary btn-lg px-4 py-3">
+                ⭐ Browse Featured Games
+            </a>
+            <a asp-controller="Platforms" asp-action="Index" class="btn btn-outline-light btn-lg px-4 py-3">
+                📖 View All Platforms
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="mb-4">
+        <h2 class="gs-page-title">Browse by Platform</h2>
+        <p class="gs-page-subtitle">Pick a store to see its current deals and exclusive offers.</p>
+                    </div>
+    <div class="row g-4 mb-5">
+        @if (Model != null)
+        {
+            @foreach (var platform in Model)
+            {
+                <div class="col-6 col-md-4 col-lg">
+                    <a asp-controller="Platforms" asp-action="Deals" asp-route-id="@platform.Id" class="text-decoration-none">
+                        <div class="card platform-card h-100">
+                            <div class="platform-card-img">
+                                @if (platform.Images?.FirstOrDefault() is var img && img != null)
+                                {
+                                    <img src="@img.ImagePath" alt="@platform.Name" class="img-fluid" style="max-height: 100%; object-fit: contain;" />
+                                }
+                                else
+                                {
+                                    @platform.Name
+                                }
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@platform.Name</h5>
+                                <span class="btn btn-sm btn-primary w-100">View deals</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>

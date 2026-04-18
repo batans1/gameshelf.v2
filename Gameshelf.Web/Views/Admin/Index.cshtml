@@ -1,0 +1,131 @@
+@model GameShelf.Web.Controllers.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container">
+    <h1 class="gs-page-title">Admin Dashboard</h1>
+    <p class="gs-page-subtitle">Overview of platform statistics and activity</p>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.TotalUsers</h2>
+                    <p class="card-text text-muted">Total Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.TotalPlatforms</h2>
+                    <p class="card-text text-muted">Platforms</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.TotalDealClicks</h2>
+                    <p class="card-text text-muted">Total Clicks</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2 class="card-title">@Model.TotalRatings</h2>
+                    <p class="card-text text-muted">Total Ratings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Click Statistics by Platform</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.PlatformClickStats.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Platform</th>
+                                        <th>Clicks</th>
+                                        <th>Last Click</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var stat in Model.PlatformClickStats)
+                                    {
+                                        <tr>
+                                            <td>@stat.PlatformName</td>
+                                            <td><span class="badge bg-primary">@stat.ClickCount</span></td>
+                                            <td>
+                                                @if (stat.LastClick.HasValue)
+                                                {
+                                                    <time datetime="@stat.LastClick.Value.ToString("O")">
+                                                        @stat.LastClick.Value.ToLocalTime().ToString("g")
+                                                    </time>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Never</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No clicks recorded yet.</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentActivity.Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var activity in Model.RecentActivity)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@activity.GameTitle</h6>
+                                        <small>@activity.ClickedAt.ToLocalTime().ToString("g")</small>
+                                    </div>
+                                    <p class="mb-1">
+                                        <span class="badge bg-secondary">@activity.PlatformName</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No recent activity.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+        <a asp-action="Users" class="btn btn-primary">Manage Users</a>
+        <a asp-action="Platforms" class="btn btn-outline-primary">Manage Platforms</a>
+        <a asp-action="HeroImage" class="btn btn-outline-primary">Hero Image</a>
+    </div>
+</div>

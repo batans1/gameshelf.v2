@@ -1,0 +1,43 @@
+2026-03-17 18:40:15.788 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-03-17 18:40:18.838 +02:00 [INF] Starting live deals sync to database...
+2026-03-17 18:40:18.844 +02:00 [INF] Starting sync for platform: Steam
+2026-03-17 18:40:31.201 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-03-17 18:40:31.256 +02:00 [INF] Removing 881 expired deals for Steam
+2026-03-17 18:40:31.921 +02:00 [INF] Synced 900 deals for Steam. Removed 881 expired.
+2026-03-17 18:40:32.525 +02:00 [INF] Starting sync for platform: GOG
+2026-03-17 18:40:44.971 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-03-17 18:40:45.006 +02:00 [INF] Removing 649 expired deals for GOG
+2026-03-17 18:40:45.606 +02:00 [INF] Synced 900 deals for GOG. Removed 649 expired.
+2026-03-17 18:40:46.211 +02:00 [INF] Starting sync for platform: Epic Games
+2026-03-17 18:40:50.490 +02:00 [INF] Fetched 400 deals from API for Epic Games
+2026-03-17 18:40:50.524 +02:00 [INF] Removing 900 expired deals for Epic Games
+2026-03-17 18:40:50.791 +02:00 [INF] Synced 400 deals for Epic Games. Removed 900 expired.
+2026-03-17 18:40:51.395 +02:00 [INF] Live deals sync completed successfully.
+2026-03-17 18:41:21.909 +02:00 [ERR] The view 'Privacy' was not found. Searched locations: ["/Views/Home/Privacy.cshtml","/Views/Shared/Privacy.cshtml","/Pages/Shared/Privacy.cshtml"]
+2026-03-17 18:41:21.979 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: The view 'Privacy' was not found. The following locations were searched:
+/Views/Home/Privacy.cshtml
+/Views/Shared/Privacy.cshtml
+/Pages/Shared/Privacy.cshtml
+   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at GameShelf.Web.Middleware.EnsureUserRoleMiddleware.InvokeAsync(HttpContext context, UserManager`1 userManager, RoleManager`1 roleManager, IMemoryCache cache) in D:\GameShelf\Gameshelf.Web\Middleware\EnsureUserRoleMiddleware.cs:line 46
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at GameShelf.Web.Middleware.InputSanitizationMiddleware.InvokeAsync(HttpContext context) in D:\GameShelf\Gameshelf.Web\Middleware\InputSanitizationMiddleware.cs:line 43
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)

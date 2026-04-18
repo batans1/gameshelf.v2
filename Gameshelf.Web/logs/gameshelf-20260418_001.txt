@@ -1,0 +1,24 @@
+2026-04-18 12:05:13.859 +03:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-04-18 12:05:16.902 +03:00 [INF] Starting live deals sync to database...
+2026-04-18 12:05:16.907 +03:00 [INF] Starting sync for platform: Steam
+2026-04-18 12:05:17.033 +03:00 [WRN] API returned non-success status code "BadRequest" for Steam. Keeping existing live deals.
+2026-04-18 12:05:17.036 +03:00 [WRN] Live deal sync for Steam did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-04-18 12:05:17.645 +03:00 [INF] Starting sync for platform: GOG
+2026-04-18 12:05:17.665 +03:00 [WRN] API returned non-success status code "BadRequest" for GOG. Keeping existing live deals.
+2026-04-18 12:05:17.668 +03:00 [WRN] Live deal sync for GOG did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-04-18 12:05:18.280 +03:00 [INF] Starting sync for platform: Epic Games
+2026-04-18 12:05:18.299 +03:00 [WRN] API returned non-success status code "BadRequest" for Epic Games. Keeping existing live deals.
+2026-04-18 12:05:18.301 +03:00 [WRN] Live deal sync for Epic Games did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-04-18 12:05:18.914 +03:00 [INF] Live deals sync completed successfully.
+2026-04-18 12:07:57.408 +03:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-04-18 12:08:00.455 +03:00 [INF] Starting live deals sync to database...
+2026-04-18 12:08:00.459 +03:00 [INF] Starting sync for platform: Steam
+2026-04-18 12:08:00.538 +03:00 [WRN] API returned non-success status code "BadRequest" for Steam. Keeping existing live deals.
+2026-04-18 12:08:00.540 +03:00 [WRN] Live deal sync for Steam did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-04-18 12:08:01.148 +03:00 [INF] Starting sync for platform: GOG
+2026-04-18 12:08:01.168 +03:00 [WRN] API returned non-success status code "BadRequest" for GOG. Keeping existing live deals.
+2026-04-18 12:08:01.170 +03:00 [WRN] Live deal sync for GOG did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-04-18 12:08:01.784 +03:00 [INF] Starting sync for platform: Epic Games
+2026-04-18 12:08:01.804 +03:00 [WRN] API returned non-success status code "BadRequest" for Epic Games. Keeping existing live deals.
+2026-04-18 12:08:01.807 +03:00 [WRN] Live deal sync for Epic Games did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-04-18 12:08:02.417 +03:00 [INF] Live deals sync completed successfully.

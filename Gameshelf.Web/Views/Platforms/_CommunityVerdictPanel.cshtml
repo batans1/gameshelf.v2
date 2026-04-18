@@ -1,0 +1,66 @@
+@model GameShelf.Models.ViewModels.DealRatings.CommunityVerdictViewModel
+@{
+    var totalRatings = Model.TotalRatings;
+}
+
+<div class="community-verdict-panel mb-4">
+    <h5 class="mb-3">📊 Community Decision</h5>
+    @if (totalRatings > 0)
+    {
+        <div class="verdict-stats">
+            <div class="verdict-item buy-now mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="verdict-label">
+                        <span class="verdict-icon">🟢</span>
+                        <strong>Buy Now</strong>
+                    </span>
+                    <span class="verdict-percentage">@Model.BuyNow.Percentage.ToString("F1")%</span>
+                    <span class="verdict-count">(@Model.BuyNow.Count @(Model.BuyNow.Count == 1 ? "user" : "users"))</span>
+                </div>
+                @if (Model.BuyNow.ReviewCount > 0)
+                {
+                    <small class="text-muted ms-4">
+                        <a href="#" class="review-link" data-verdict="BuyNow">@Model.BuyNow.ReviewCount @(Model.BuyNow.ReviewCount == 1 ? "review" : "reviews")</a>
+                    </small>
+                }
+            </div>
+            <div class="verdict-item wait mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="verdict-label">
+                        <span class="verdict-icon">🟡</span>
+                        <strong>Wait</strong>
+                    </span>
+                    <span class="verdict-percentage">@Model.Wait.Percentage.ToString("F1")%</span>
+                    <span class="verdict-count">(@Model.Wait.Count @(Model.Wait.Count == 1 ? "user" : "users"))</span>
+                </div>
+                @if (Model.Wait.ReviewCount > 0)
+                {
+                    <small class="text-muted ms-4">
+                        <a href="#" class="review-link" data-verdict="Wait">@Model.Wait.ReviewCount @(Model.Wait.ReviewCount == 1 ? "review" : "reviews")</a>
+                    </small>
+                }
+            </div>
+            <div class="verdict-item not-worth-it mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="verdict-label">
+                        <span class="verdict-icon">🔴</span>
+                        <strong>Not Worth It</strong>
+                    </span>
+                    <span class="verdict-percentage">@Model.NotWorthIt.Percentage.ToString("F1")%</span>
+                    <span class="verdict-count">(@Model.NotWorthIt.Count @(Model.NotWorthIt.Count == 1 ? "user" : "users"))</span>
+                </div>
+                @if (Model.NotWorthIt.ReviewCount > 0)
+                {
+                    <small class="text-muted ms-4">
+                        <a href="#" class="review-link" data-verdict="NotWorthIt">@Model.NotWorthIt.ReviewCount @(Model.NotWorthIt.ReviewCount == 1 ? "review" : "reviews")</a>
+                    </small>
+                }
+            </div>
+        </div>
+        <p class="text-muted small mt-2 mb-0">Based on @totalRatings @(totalRatings == 1 ? "rating" : "ratings")</p>
+    }
+    else
+    {
+        <p class="text-muted">Be the first to rate this deal!</p>
+    }
+</div>

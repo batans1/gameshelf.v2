@@ -1,0 +1,106 @@
+2026-02-21 17:59:21.302 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-21 17:59:24.350 +02:00 [INF] Starting live deals sync to database...
+2026-02-21 17:59:24.356 +02:00 [INF] Starting sync for platform: Steam
+2026-02-21 17:59:30.839 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-21 17:59:31.229 +02:00 [INF] Synced 900 deals for Steam. Removed 0 expired.
+2026-02-21 17:59:31.838 +02:00 [INF] Starting sync for platform: GOG
+2026-02-21 17:59:38.134 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-21 17:59:38.324 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-21 17:59:38.933 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-21 17:59:45.228 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-21 17:59:45.368 +02:00 [INF] Synced 900 deals for Epic Games. Removed 0 expired.
+2026-02-21 17:59:45.977 +02:00 [INF] Live deals sync completed successfully.
+2026-02-21 18:01:39.970 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-21 18:01:43.013 +02:00 [INF] Starting live deals sync to database...
+2026-02-21 18:01:43.017 +02:00 [INF] Starting sync for platform: Steam
+2026-02-21 18:01:49.398 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-21 18:01:49.676 +02:00 [INF] Synced 900 deals for Steam. Removed 0 expired.
+2026-02-21 18:01:50.289 +02:00 [INF] Starting sync for platform: GOG
+2026-02-21 18:01:56.594 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-21 18:01:56.806 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-21 18:01:57.418 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-21 18:02:03.714 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-21 18:02:03.992 +02:00 [INF] Synced 900 deals for Epic Games. Removed 0 expired.
+2026-02-21 18:02:04.606 +02:00 [INF] Live deals sync completed successfully.
+2026-02-21 18:02:48.888 +02:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-02-21 18:02:49.042 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: Unsupported file format: .gif
+   at GameShelf.Business.Services.Implementations.ImageService.UploadImageAsync(IFormFile file, String folderName) in D:\fooolishnesscsharp\Gameshelf.Business\Services\Implementations\ImageService.cs:line 28
+   at GameShelf.Business.Services.Implementations.PlatformService.UpdateAsync(Guid id, PlatformCreateOrEditViewModel model) in D:\fooolishnesscsharp\Gameshelf.Business\Services\Implementations\PlatformService.cs:line 115
+   at GameShelf.Web.Controllers.PlatformsController.Edit(Guid id, PlatformCreateOrEditViewModel model) in D:\fooolishnesscsharp\Gameshelf.Web\Controllers\PlatformsController.cs:line 602
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ExceptionContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at GameShelf.Web.Middleware.EnsureUserRoleMiddleware.InvokeAsync(HttpContext context, UserManager`1 userManager, RoleManager`1 roleManager, IMemoryCache cache) in D:\fooolishnesscsharp\Gameshelf.Web\Middleware\EnsureUserRoleMiddleware.cs:line 46
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at GameShelf.Web.Middleware.InputSanitizationMiddleware.InvokeAsync(HttpContext context) in D:\fooolishnesscsharp\Gameshelf.Web\Middleware\InputSanitizationMiddleware.cs:line 43
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-02-21 18:03:11.040 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: Unsupported file format: .gif
+   at GameShelf.Business.Services.Implementations.ImageService.UploadImageAsync(IFormFile file, String folderName) in D:\fooolishnesscsharp\Gameshelf.Business\Services\Implementations\ImageService.cs:line 28
+   at GameShelf.Business.Services.Implementations.PlatformService.UpdateAsync(Guid id, PlatformCreateOrEditViewModel model) in D:\fooolishnesscsharp\Gameshelf.Business\Services\Implementations\PlatformService.cs:line 115
+   at GameShelf.Web.Controllers.PlatformsController.Edit(Guid id, PlatformCreateOrEditViewModel model) in D:\fooolishnesscsharp\Gameshelf.Web\Controllers\PlatformsController.cs:line 602
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ExceptionContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at GameShelf.Web.Middleware.EnsureUserRoleMiddleware.InvokeAsync(HttpContext context, UserManager`1 userManager, RoleManager`1 roleManager, IMemoryCache cache) in D:\fooolishnesscsharp\Gameshelf.Web\Middleware\EnsureUserRoleMiddleware.cs:line 46
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at GameShelf.Web.Middleware.InputSanitizationMiddleware.InvokeAsync(HttpContext context) in D:\fooolishnesscsharp\Gameshelf.Web\Middleware\InputSanitizationMiddleware.cs:line 43
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-02-21 18:07:32.019 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+System.ArgumentException: Unsupported file format: .gif
+   at GameShelf.Business.Services.Implementations.ImageService.UploadImageAsync(IFormFile file, String folderName) in D:\fooolishnesscsharp\Gameshelf.Business\Services\Implementations\ImageService.cs:line 28
+   at GameShelf.Business.Services.Implementations.PlatformService.UpdateAsync(Guid id, PlatformCreateOrEditViewModel model) in D:\fooolishnesscsharp\Gameshelf.Business\Services\Implementations\PlatformService.cs:line 115
+   at GameShelf.Web.Controllers.PlatformsController.Edit(Guid id, PlatformCreateOrEditViewModel model) in D:\fooolishnesscsharp\Gameshelf.Web\Controllers\PlatformsController.cs:line 602
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ExceptionContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at GameShelf.Web.Middleware.EnsureUserRoleMiddleware.InvokeAsync(HttpContext context, UserManager`1 userManager, RoleManager`1 roleManager, IMemoryCache cache) in D:\fooolishnesscsharp\Gameshelf.Web\Middleware\EnsureUserRoleMiddleware.cs:line 46
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at GameShelf.Web.Middleware.InputSanitizationMiddleware.InvokeAsync(HttpContext context) in D:\fooolishnesscsharp\Gameshelf.Web\Middleware\InputSanitizationMiddleware.cs:line 43
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)

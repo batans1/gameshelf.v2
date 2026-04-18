@@ -1,0 +1,138 @@
+@model GameShelf.Models.ViewModels.DealRatings.DealRatingViewModel
+@using GameShelf.Models.Domain.Entities
+@{
+    var dealId = ViewData["DealId"] as string;
+    var customDealId = ViewData["CustomDealId"] as Guid?;
+    var storeName = ViewData["StoreName"] as string ?? "";
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+}
+
+@if (isAuthenticated && (!string.IsNullOrEmpty(dealId) || customDealId.HasValue))
+{
+    <div class="deal-verdict-selector mt-4">
+        <h5 class="mb-3">💭 Your Verdict</h5>
+        
+        @if (Model.UserVerdict.HasValue)
+        {
+            var reasonColorClass = Model.UserVerdict == DealVerdict.BuyNow ? "text-success" : Model.UserVerdict == DealVerdict.Wait ? "text-warning" : "text-danger";
+            <div class="alert alert-info mb-3">
+                <strong>Your current verdict:</strong> 
+                <span class="badge bg-@(Model.UserVerdict == DealVerdict.BuyNow ? "success" : Model.UserVerdict == DealVerdict.Wait ? "warning" : "danger")">
+                    @Model.UserVerdict.ToString()
+                </span>
+                @if (Model.UserReasonId.HasValue)
+                {
+                    <br />
+                    <small class="@reasonColorClass fw-medium">Reason: @DealRatingReason.GetReasonText(Model.UserReasonId.Value)</small>
+                }
+            </div>
+        }
+        
+        <div class="verdict-options">
+            <div class="accordion" id="verdictAccordion">
+                <!-- Buy Now -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button @(Model.UserVerdict == DealVerdict.BuyNow ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#buyNowCollapse">
+                            <span class="verdict-icon me-2">🟢</span> <strong>Buy Now</strong>
+                        </button>
+                    </h2>
+                    <div id="buyNowCollapse" class="accordion-collapse collapse @(Model.UserVerdict == DealVerdict.BuyNow ? "show" : "")" data-bs-parent="#verdictAccordion">
+                        <div class="accordion-body">
+                            <div class="reason-options mb-3">
+                                @foreach (var reason in DealRatingReason.GetReasonsForVerdict(DealVerdict.BuyNow))
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="reasonId" id="reason_@reason.Key" value="@reason.Key" 
+                                               @(Model.UserReasonId == reason.Key ? "checked" : "") data-verdict="BuyNow">
+                                        <label class="form-check-label text-success fw-medium" for="reason_@reason.Key">
+                                            @reason.Value
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewText_buyNow" class="form-label">Optional Review (explain your choice)</label>
+                                <textarea class="form-control" id="reviewText_buyNow" rows="3" placeholder="Share your thoughts about this deal..."></textarea>
+                            </div>
+                            <button class="btn btn-success btn-sm submit-verdict" data-verdict="BuyNow" data-deal-id="@dealId" data-custom-deal-id="@(customDealId?.ToString() ?? "")" data-store-name="@storeName">
+                                Submit Buy Now Verdict
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Wait -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button @(Model.UserVerdict == DealVerdict.Wait ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#waitCollapse">
+                            <span class="verdict-icon me-2">🟡</span> <strong>Wait</strong>
+                        </button>
+                    </h2>
+                    <div id="waitCollapse" class="accordion-collapse collapse @(Model.UserVerdict == DealVerdict.Wait ? "show" : "")" data-bs-parent="#verdictAccordion">
+                        <div class="accordion-body">
+                            <div class="reason-options mb-3">
+                                @foreach (var reason in DealRatingReason.GetReasonsForVerdict(DealVerdict.Wait))
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="reasonId" id="reason_@reason.Key" value="@reason.Key" 
+                                               @(Model.UserReasonId == reason.Key ? "checked" : "") data-verdict="Wait">
+                                        <label class="form-check-label text-warning fw-medium" for="reason_@reason.Key">
+                                            @reason.Value
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewText_wait" class="form-label">Optional Review (explain your choice)</label>
+                                <textarea class="form-control" id="reviewText_wait" rows="3" placeholder="Share your thoughts about this deal..."></textarea>
+                            </div>
+                            <button class="btn btn-warning btn-sm submit-verdict" data-verdict="Wait" data-deal-id="@dealId" data-custom-deal-id="@(customDealId?.ToString() ?? "")" data-store-name="@storeName">
+                                Submit Wait Verdict
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Not Worth It -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button @(Model.UserVerdict == DealVerdict.NotWorthIt ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#notWorthItCollapse">
+                            <span class="verdict-icon me-2">🔴</span> <strong>Not Worth It</strong>
+                        </button>
+                    </h2>
+                    <div id="notWorthItCollapse" class="accordion-collapse collapse @(Model.UserVerdict == DealVerdict.NotWorthIt ? "show" : "")" data-bs-parent="#verdictAccordion">
+                        <div class="accordion-body">
+                            <div class="reason-options mb-3">
+                                @foreach (var reason in DealRatingReason.GetReasonsForVerdict(DealVerdict.NotWorthIt))
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="reasonId" id="reason_@reason.Key" value="@reason.Key" 
+                                               @(Model.UserReasonId == reason.Key ? "checked" : "") data-verdict="NotWorthIt">
+                                        <label class="form-check-label text-danger fw-medium" for="reason_@reason.Key">
+                                            @reason.Value
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                            <div class="mb-3">
+                                <label for="reviewText_notWorthIt" class="form-label">Optional Review (explain your choice)</label>
+                                <textarea class="form-control" id="reviewText_notWorthIt" rows="3" placeholder="Share your thoughts about this deal..."></textarea>
+                            </div>
+                            <button class="btn btn-danger btn-sm submit-verdict" data-verdict="NotWorthIt" data-deal-id="@dealId" data-custom-deal-id="@(customDealId?.ToString() ?? "")" data-store-name="@storeName">
+                                Submit Not Worth It Verdict
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (!isAuthenticated)
+{
+    <div class="alert alert-info mt-4">
+        <i class="me-2">🔐</i>
+        <a asp-area="Identity" asp-page="/Account/Login" class="alert-link">Log in</a> to rate this deal and help others make informed decisions!
+    </div>
+}

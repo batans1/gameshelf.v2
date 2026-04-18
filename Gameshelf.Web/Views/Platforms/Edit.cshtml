@@ -1,0 +1,80 @@
+@model GameShelf.Models.ViewModels.Platforms.PlatformCreateOrEditViewModel
+@{
+    ViewData["Title"] = "Edit Platform";
+    var platformId = ViewData["PlatformId"] as Guid? ?? ViewContext.RouteData.Values["id"] as Guid?;
+}
+
+<h1>Edit Platform</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" asp-route-id="@platformId" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="WebsiteUrl" class="form-label"></label>
+                <input asp-for="WebsiteUrl" class="form-control" />
+                <span asp-validation-for="WebsiteUrl" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SupportUrl" class="form-label"></label>
+                <input asp-for="SupportUrl" class="form-control" />
+                <span asp-validation-for="SupportUrl" class="text-danger"></span>
+            </div>
+            <div class="card mb-3 border-primary">
+                <div class="card-header text-primary">Platform Logo (optional)</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="Images" class="form-label">Logo (single image)</label>
+                        <input asp-for="Images" class="form-control" type="file" accept="image/*" />
+                        <small class="text-muted">Leave empty to keep the current logo. Upload a new image only to replace it.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SelectedOwnerIds" class="form-label">Assign owners</label>
+                <select asp-for="SelectedOwnerIds" asp-items="Model.AvailableOwners" class="form-select" multiple></select>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h4>Current Logo</h4>
+        @if (Model.ExistingImages != null && Model.ExistingImages.Any())
+        {
+            var mainLogo = Model.ExistingImages.First();
+            <div class="card mb-3">
+                <img src="@mainLogo.ImagePath" class="card-img-top" style="height: 200px; object-fit: contain; background: #f8f9fa;" alt="Platform logo" />
+                <div class="card-body">
+                    <p class="card-text">
+                        <span class="badge bg-success">Logo</span>
+                    </p>
+                    <form asp-controller="Platforms" asp-action="DeleteLogo" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="platformId" value="@platformId" />
+                        <input type="hidden" name="imageId" value="@mainLogo.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this logo?');">
+                            Delete Logo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No logo uploaded yet.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

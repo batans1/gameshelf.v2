@@ -1,0 +1,46 @@
+@model IEnumerable<GameShelf.Models.ViewModels.Platforms.PlatformViewModel>
+@{
+    ViewData["Title"] = "Platform Management";
+}
+
+<div class="container">
+    <h1 class="gs-page-title">Platform Management</h1>
+    <p class="gs-page-subtitle">View and manage all platforms</p>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Website</th>
+                    <th>Support URL</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var platform in Model)
+                {
+                    <tr>
+                        <td>@platform.Name</td>
+                        <td><a href="@platform.WebsiteUrl" target="_blank">@platform.WebsiteUrl</a></td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(platform.SupportUrl))
+                            {
+                                <a href="@platform.SupportUrl" target="_blank">@platform.SupportUrl</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-controller="Platforms" asp-action="Details" asp-route-id="@platform.Id" class="btn btn-sm btn-outline-primary">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <a asp-action="Index" class="gs-back-link">← Back to Dashboard</a>
+</div>

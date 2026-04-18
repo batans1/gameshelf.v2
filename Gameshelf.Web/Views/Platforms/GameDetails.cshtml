@@ -1,0 +1,319 @@
+@model GameShelf.Models.ViewModels.GameDeals.GameDealDetailsViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+    var isAdmin = User.IsInRole("Admin");
+    var inSavingsCart = (bool?)ViewData["InSavingsCart"] == true;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card game-details-card shadow-lg">
+            <div class="row g-0">
+                <div class="col-md-5">
+                    <div class="game-thumb-container">
+                        @if (!string.IsNullOrEmpty(Model.ThumbUrl))
+                        {
+                            <img src="@Model.ThumbUrl" alt="@Model.Title" class="img-fluid game-thumb" />
+                        }
+                        else
+                        {
+                            <div class="game-thumb-placeholder">
+                                <span>🎮</span>
+                                <p class="mt-2">No image available</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body p-4">
+                        @if (!string.IsNullOrEmpty(Model.StoreName))
+                        {
+                            <span class="badge bg-secondary mb-3 px-3 py-2">@Model.StoreName</span>
+                        }
+                        <h1 class="card-title mb-3">@Model.Title</h1>
+                        
+                        <div class="price-section">
+                            <div class="d-flex align-items-baseline gap-3 mb-2">
+                                <span class="sale-price-eur">€@Model.SalePriceEur.ToString("F2")</span>
+                                <span class="sale-price">$@Model.SalePriceUsd.ToString("F2")</span>
+                            </div>
+                            @if (Model.NormalPriceUsd > Model.SalePriceUsd)
+                            {
+                                <div class="original-price">
+                                    <s>€@Model.NormalPriceEur.ToString("F2")</s>
+                                    <s class="ms-2">$@Model.NormalPriceUsd.ToString("F2")</s>
+                                    <span class="badge bg-success ms-2 px-2 py-1">@Model.SavingsPercent.ToString("F0")% OFF</span>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Community Verdict Panel -->
+                        @{
+                            ViewData["DealId"] = Model.DealId;
+                            ViewData["CustomDealId"] = Model.CustomDealId;
+                            ViewData["StoreName"] = Model.StoreName;
+                        }
+                        @await Html.PartialAsync("_CommunityVerdictPanel", Model.Rating.CommunityVerdict)
+                        
+                        <!-- Deal Verdict Selector -->
+                        @await Html.PartialAsync("_DealVerdictSelector", Model.Rating)
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="@Model.DealUrl" target="_blank" rel="noopener noreferrer" 
+                               class="btn btn-primary btn-lg view-deal-btn py-3"
+                               data-deal-id="@(Model.DealId ?? "")"
+                               data-store-name="@Model.StoreName"
+                               data-game-title="@Model.Title"
+                               data-deal-url="@Model.DealUrl">
+                                🛒 View Deal on @Model.StoreName →
+                            </a>
+                            @if (isAuthenticated)
+                            {
+                                <button type="button"
+                                        id="savingsCartBtn"
+                                        class="btn btn-outline-success btn-lg"
+                                        data-game-deal-id="@Model.GameDealId"
+                                        data-in-cart="@(inSavingsCart ? "true" : "false")">
+                                    @(inSavingsCart ? "Remove from Savings Cart" : "Add to Savings Cart")
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reviews Section -->
+        <div id="reviewsSection" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Community Reviews</h5>
+                </div>
+                <div class="card-body" id="reviewsContent">
+                    <!-- Reviews will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <a asp-action="FeaturedGames" class="gs-back-link mt-4">← Back to Featured Games</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function() {
+            const dealId = @Html.Raw(Json.Serialize(Model.DealId ?? ""));
+            const customDealId = @Html.Raw(Model.CustomDealId.HasValue ? $"\"{Model.CustomDealId.Value}\"" : "null");
+            const storeName = @Html.Raw(Json.Serialize(Model.StoreName));
+            const isAdmin = @Html.Raw(Json.Serialize(isAdmin));
+            const savingsCartBtn = document.getElementById('savingsCartBtn');
+            
+            // Handle verdict submission
+            document.querySelectorAll('.submit-verdict').forEach(function(btn) {
+                btn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const verdict = this.getAttribute('data-verdict');
+                    const dealIdValue = this.getAttribute('data-deal-id');
+                    const customDealIdValue = this.getAttribute('data-custom-deal-id');
+                    const storeNameValue = this.getAttribute('data-store-name');
+                    
+                    // Get selected reason
+                    const reasonRadio = document.querySelector(`input[name="reasonId"][data-verdict="${verdict}"]:checked`);
+                    if (!reasonRadio) {
+                        alert('Please select a reason for your verdict');
+                        return;
+                    }
+                    
+                    const reasonId = parseInt(reasonRadio.value);
+                    
+                    // Map verdict string to API enum integer (BuyNow=1, Wait=2, NotWorthIt=3)
+                    const verdictMap = { 'BuyNow': 1, 'Wait': 2, 'NotWorthIt': 3 };
+                    const verdictInt = verdictMap[verdict] || 1;
+                    
+                    // Get review text (IDs: reviewText_buyNow, reviewText_wait, reviewText_notWorthIt)
+                    const reviewTextarea = document.getElementById('reviewText_' + verdict.charAt(0).toLowerCase() + verdict.slice(1).replace(/\s+/g, ''));
+                    const reviewText = reviewTextarea ? reviewTextarea.value.trim() : null;
+                    
+                    try {
+                        const res = await fetch('/api/deal-ratings', {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                dealId: dealIdValue || null,
+                                customDealId: customDealIdValue || null,
+                                storeName: storeNameValue,
+                                verdict: verdictInt,
+                                reasonId: reasonId,
+                                reviewText: reviewText || null
+                            })
+                        });
+                        
+                        if (res.ok) {
+                            const payload = await res.json();
+                            if (payload?.moderationWarning) {
+                                alert(payload.moderationWarning);
+                            }
+                            // Show success message and reload
+                            const successMsg = document.createElement('div');
+                            successMsg.className = 'alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3';
+                            successMsg.style.zIndex = '9999';
+                            successMsg.textContent = '✓ Verdict saved!';
+                            document.body.appendChild(successMsg);
+                            
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
+                        } else if (res.status === 401) {
+                            alert('Please log in to rate deals');
+                        } else {
+                            let errMsg = 'Please try again.';
+                            try {
+                                const error = await res.json();
+                                errMsg = error.error || errMsg;
+                            } catch (_) {
+                                errMsg = 'Server error (status ' + res.status + '). Check if the database migration has been applied.';
+                            }
+                            alert('Failed to save verdict: ' + errMsg);
+                        }
+                    } catch (err) {
+                        console.error('Failed to save verdict:', err);
+                        alert('Failed to save verdict: ' + (err.message || 'Please try again.'));
+                    }
+                });
+            });
+            
+            // Handle review link clicks
+            document.querySelectorAll('.review-link').forEach(function(link) {
+                link.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const verdictStr = this.getAttribute('data-verdict');
+                    // Use enum name directly (ASP.NET Core will parse it)
+                    
+                    let endpoint;
+                    if (customDealId && customDealId !== '') {
+                        endpoint = `/api/deal-ratings/custom/${customDealId}/reviews?verdict=${verdictStr}`;
+                    } else if (dealId && dealId !== '') {
+                        // dealId is already a raw string (not HTML-encoded), so encode it once for URL
+                        endpoint = `/api/deal-ratings/${encodeURIComponent(dealId)}/reviews?verdict=${encodeURIComponent(verdictStr)}`;
+                    } else {
+                        console.error('Cannot load reviews: missing dealId or customDealId', { dealId, customDealId });
+                        alert('Cannot load reviews: deal information missing');
+                        return;
+                    }
+                    
+                    console.log('Fetching reviews from:', endpoint, { dealId, customDealId, verdictStr, storeName });
+                    try {
+                        const res = await fetch(endpoint);
+                        console.log('Response status:', res.status);
+                        if (res.ok) {
+                            const reviews = await res.json();
+                            console.log('Received reviews:', reviews, 'Count:', reviews.length);
+                            if (reviews.length === 0) {
+                                console.warn('No reviews returned. Check if GameDealId was resolved correctly.');
+                            }
+                            displayReviews(reviews, verdictStr);
+                        } else {
+                            const errorText = await res.text();
+                            console.error('Failed to load reviews:', res.status, res.statusText, errorText);
+                            alert('Failed to load reviews (status ' + res.status + '). Check console for details.');
+                        }
+                    } catch (err) {
+                        console.error('Failed to load reviews:', err);
+                        alert('Failed to load reviews: ' + (err.message || 'Please try again.'));
+                    }
+                });
+            });
+            
+            function displayReviews(reviews, verdict) {
+                const section = document.getElementById('reviewsSection');
+                const content = document.getElementById('reviewsContent');
+                
+                if (reviews.length === 0) {
+                    content.innerHTML = '<p class="text-muted">No reviews yet for this verdict.</p>';
+                } else {
+                    let html = `<h6 class="mb-3">${verdict} Reviews</h6>`;
+                    reviews.forEach(function(review) {
+                        // Determine text color class based on verdict
+                        const textColorClass = review.verdict === 'BuyNow' || review.verdict === 1 ? 'text-success' 
+                                             : review.verdict === 'Wait' || review.verdict === 2 ? 'text-warning' 
+                                             : 'text-danger';
+                        const deleteBtn = isAdmin ? `
+                            <button class="btn btn-sm btn-outline-danger delete-review-text mt-2" data-rating-id="${review.id}">
+                                Remove review text
+                            </button>` : '';
+
+                        html += `
+                            <div class="review-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <a class="fw-bold text-decoration-none" href="/profile/${encodeURIComponent(review.userName)}">${escapeHtml(review.userName)}</a>
+                                    <small class="text-muted">${new Date(review.createdAt).toLocaleDateString()}</small>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="badge bg-light border ${textColorClass} fw-medium">${escapeHtml(review.reasonText)}</span>
+                                </div>
+                                <p class="mb-0">${escapeHtml(review.reviewText)}</p>
+                                ${deleteBtn}
+                            </div>
+                        `;
+                    });
+                    content.innerHTML = html;
+                    wireAdminReviewDelete();
+                }
+                
+                section.style.display = 'block';
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function wireAdminReviewDelete() {
+                if (!isAdmin) return;
+
+                document.querySelectorAll('.delete-review-text').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const ratingId = this.getAttribute('data-rating-id');
+                        if (!ratingId) return;
+                        if (!confirm('Remove written review text for this rating?')) return;
+
+                        const res = await fetch(`/api/deal-ratings/${ratingId}/review-text`, {
+                            method: 'DELETE'
+                        });
+
+                        if (res.ok) {
+                            this.closest('.review-item')?.remove();
+                        } else {
+                            alert('Failed to remove review text.');
+                        }
+                    });
+                });
+            }
+            
+            // Click tracking is handled by deal-interactions.js globally
+            if (savingsCartBtn) {
+                savingsCartBtn.addEventListener('click', async function() {
+                    const gameDealId = this.getAttribute('data-game-deal-id');
+                    const inCart = this.getAttribute('data-in-cart') === 'true';
+                    const method = inCart ? 'DELETE' : 'POST';
+                    const res = await fetch(`/api/savings-cart/${gameDealId}`, { method });
+                    if (!res.ok) {
+                        alert('Could not update savings cart.');
+                        return;
+                    }
+
+                    const nextInCart = !inCart;
+                    this.setAttribute('data-in-cart', nextInCart ? 'true' : 'false');
+                    this.textContent = nextInCart ? 'Remove from Savings Cart' : 'Add to Savings Cart';
+                    this.classList.toggle('btn-outline-success', !nextInCart);
+                    this.classList.toggle('btn-outline-danger', nextInCart);
+                });
+            }
+        })();
+    </script>
+}

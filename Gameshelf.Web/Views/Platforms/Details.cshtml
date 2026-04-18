@@ -1,0 +1,61 @@
+@model GameShelf.Models.ViewModels.Platforms.PlatformViewModel
+@{
+    ViewData["Title"] = "Platform Details";
+    var mainImage = Model.Images?.FirstOrDefault();
+}
+
+<div class="container mt-4">
+    <h1 class="gs-page-title">@Model.Name</h1>
+    <p class="gs-page-subtitle mb-4">Platform details</p>
+
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+            @if (mainImage != null)
+            {
+                <div class="card overflow-hidden">
+                    <img src="@mainImage.ImagePath" class="img-fluid w-100" style="height: 320px; object-fit: cover;" alt="@Model.Name" />
+                </div>
+            }
+            else
+            {
+                <div class="card platform-card">
+                    <div class="platform-card-img" style="height: 320px;">@Model.Name</div>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Info</h5>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">Name</dt>
+                        <dd class="col-sm-8 fw-bold">@Model.Name</dd>
+                        <dt class="col-sm-4 text-muted">Website</dt>
+                        <dd class="col-sm-8"><a href="@Model.WebsiteUrl" target="_blank" rel="noopener">@Model.WebsiteUrl</a></dd>
+                        <dt class="col-sm-4 text-muted">Support</dt>
+                        <dd class="col-sm-8">
+                            @if (string.IsNullOrEmpty(Model.SupportUrl))
+                            {
+                                <text>—</text>
+                            }
+                            else
+                            {
+                                <a href="@Model.SupportUrl" target="_blank" rel="noopener">@Model.SupportUrl</a>
+                            }
+                        </dd>
+                    </dl>
+                    <div class="mt-4 d-flex flex-wrap gap-2">
+                        <a asp-action="Deals" asp-route-id="@Model.Id" class="btn btn-primary">View deals</a>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Back to platforms</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("PlatformOwner"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Edit</a>
+                            <a asp-action="CustomDeals" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Custom Deals</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

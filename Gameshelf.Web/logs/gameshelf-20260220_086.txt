@@ -1,0 +1,24 @@
+2026-02-20 23:03:59.597 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-20 23:04:02.660 +02:00 [INF] Starting live deals sync to database...
+2026-02-20 23:04:02.664 +02:00 [INF] Starting sync for platform: Steam
+2026-02-20 23:04:02.735 +02:00 [WRN] Rate limited by API. Keeping existing live deals for Steam
+2026-02-20 23:04:02.736 +02:00 [WRN] Live deal sync for Steam did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 23:04:03.338 +02:00 [INF] Starting sync for platform: GOG
+2026-02-20 23:04:03.356 +02:00 [WRN] Rate limited by API. Keeping existing live deals for GOG
+2026-02-20 23:04:03.357 +02:00 [WRN] Live deal sync for GOG did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 23:04:03.971 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-20 23:04:03.988 +02:00 [WRN] Rate limited by API. Keeping existing live deals for Epic Games
+2026-02-20 23:04:03.989 +02:00 [WRN] Live deal sync for Epic Games did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 23:04:04.603 +02:00 [INF] Live deals sync completed successfully.
+2026-02-20 23:21:04.012 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-20 23:21:07.052 +02:00 [INF] Starting live deals sync to database...
+2026-02-20 23:21:07.056 +02:00 [INF] Starting sync for platform: Steam
+2026-02-20 23:21:13.475 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-20 23:21:13.913 +02:00 [INF] Synced 900 deals for Steam. Removed 0 expired.
+2026-02-20 23:21:14.525 +02:00 [INF] Starting sync for platform: GOG
+2026-02-20 23:21:20.823 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-20 23:21:21.034 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-20 23:21:21.638 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-20 23:21:27.910 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-20 23:21:28.073 +02:00 [INF] Synced 900 deals for Epic Games. Removed 0 expired.
+2026-02-20 23:21:28.677 +02:00 [INF] Live deals sync completed successfully.

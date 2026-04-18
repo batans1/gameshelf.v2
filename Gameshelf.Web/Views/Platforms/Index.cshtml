@@ -1,0 +1,47 @@
+@model IEnumerable<GameShelf.Models.ViewModels.Platforms.PlatformViewModel>
+@{
+    ViewData["Title"] = "Platforms";
+}
+
+<div class="mb-4">
+    <h1 class="gs-page-title">🎮 Game Platforms</h1>
+    <p class="gs-page-subtitle">Choose a platform to see its current deals. Check out <a asp-action="FeaturedGames" class="text-decoration-none fw-semibold">⭐ Featured Games</a> for top-rated deals!</p>
+</div>
+
+@if (User.IsInRole("Admin") || User.IsInRole("PlatformOwner"))
+{
+    <p class="mb-4">
+        <a asp-action="Create" class="btn btn-primary">Add platform</a>
+    </p>
+}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card platform-card h-100">
+                <div class="platform-card-img">
+                    @if (item.Images?.FirstOrDefault() is var img && img != null)
+                    {
+                        <img src="@img.ImagePath" alt="@item.Name" class="img-fluid" style="max-height: 100%; object-fit: contain;" />
+                    }
+                    else
+                    {
+                        @item.Name
+                    }
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@item.Name</h5>
+                    <div class="mt-auto pt-2 d-flex flex-wrap gap-1">
+                        <a asp-action="Deals" asp-route-id="@item.Id" class="btn btn-primary btn-sm flex-grow-1">View deals</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Details</a>
+                        @if (User.IsInRole("Admin") || User.IsInRole("PlatformOwner"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

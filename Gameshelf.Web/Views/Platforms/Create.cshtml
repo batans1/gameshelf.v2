@@ -1,0 +1,53 @@
+@model GameShelf.Models.ViewModels.Platforms.PlatformCreateOrEditViewModel
+@{
+    ViewData["Title"] = "Add Platform";
+}
+
+<h1>Add Game Platform</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="WebsiteUrl" class="form-label"></label>
+                <input asp-for="WebsiteUrl" class="form-control" placeholder="https://store.example.com" />
+                <span asp-validation-for="WebsiteUrl" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SupportUrl" class="form-label"></label>
+                <input asp-for="SupportUrl" class="form-control" placeholder="https://support.example.com" />
+                <span asp-validation-for="SupportUrl" class="text-danger"></span>
+            </div>
+            <div class="card mb-3 border-primary">
+                <div class="card-header text-primary">Upload Platform Logo</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="Images" class="form-label">Logo (single image)</label>
+                        <input asp-for="Images" class="form-control" type="file" accept="image/*" />
+                        <small class="text-muted">Upload the main platform logo.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SelectedOwnerIds" class="form-label">Assign owners</label>
+                <select asp-for="SelectedOwnerIds" asp-items="Model.AvailableOwners" class="form-select" multiple></select>
+                <small class="text-muted">Hold Ctrl/Cmd to select multiple.</small>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,24 @@
+2026-02-21 17:49:59.200 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-21 17:50:02.244 +02:00 [INF] Starting live deals sync to database...
+2026-02-21 17:50:02.249 +02:00 [INF] Starting sync for platform: Steam
+2026-02-21 17:50:34.138 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-21 17:50:34.540 +02:00 [INF] Synced 900 deals for Steam. Removed 0 expired.
+2026-02-21 17:50:35.144 +02:00 [INF] Starting sync for platform: GOG
+2026-02-21 17:50:45.922 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-21 17:50:46.110 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-21 17:50:46.716 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-21 17:50:57.209 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-21 17:50:57.355 +02:00 [INF] Synced 900 deals for Epic Games. Removed 0 expired.
+2026-02-21 17:50:57.966 +02:00 [INF] Live deals sync completed successfully.
+2026-02-21 17:59:21.302 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-21 17:59:24.350 +02:00 [INF] Starting live deals sync to database...
+2026-02-21 17:59:24.356 +02:00 [INF] Starting sync for platform: Steam
+2026-02-21 17:59:30.839 +02:00 [INF] Fetched 900 deals from API for Steam
+2026-02-21 17:59:31.229 +02:00 [INF] Synced 900 deals for Steam. Removed 0 expired.
+2026-02-21 17:59:31.838 +02:00 [INF] Starting sync for platform: GOG
+2026-02-21 17:59:38.134 +02:00 [INF] Fetched 900 deals from API for GOG
+2026-02-21 17:59:38.324 +02:00 [INF] Synced 900 deals for GOG. Removed 0 expired.
+2026-02-21 17:59:38.933 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-21 17:59:45.228 +02:00 [INF] Fetched 900 deals from API for Epic Games
+2026-02-21 17:59:45.368 +02:00 [INF] Synced 900 deals for Epic Games. Removed 0 expired.
+2026-02-21 17:59:45.977 +02:00 [INF] Live deals sync completed successfully.

@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Hero Image";
+}
+
+<div class="container">
+    <h1 class="gs-page-title">Hero Image</h1>
+    <p class="gs-page-subtitle">Set the background image for the home page hero section. Replaces the current image.</p>
+
+    @if (TempData["HeroImageSuccess"] is string success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @success
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["HeroImageError"] is string error)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @error
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            @if (ViewBag.HasCurrentImage == true)
+            {
+                <p class="text-muted mb-3">A hero image is currently set. Upload a new image to replace it.</p>
+            }
+            else
+            {
+                <p class="text-muted mb-3">No hero image set yet. Upload an image (JPG, PNG, GIF, or WebP) to display on the home page.</p>
+            }
+
+            <form asp-action="HeroImage" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="file" class="form-label">Choose image</label>
+                    <input type="file" name="file" id="file" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Upload hero image</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to Admin</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+@model GameShelf.Web.Controllers.EditRolesViewModel
+@{
+    ViewData["Title"] = "Edit User Roles";
+}
+
+<div class="container">
+    <h1 class="gs-page-title">Edit User Roles</h1>
+    <p class="gs-page-subtitle">Assign roles to @Model.UserName</p>
+
+    <form asp-action="EditRoles" method="post">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="UserName" />
+        <input type="hidden" asp-for="Email" />
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="mb-3"><strong>User:</strong> @Model.UserName (@Model.Email)</p>
+                <div class="mb-0">
+                    <label class="form-label fw-semibold">Roles</label>
+                    <div class="d-flex flex-wrap gap-3">
+                        @foreach (var role in Model.AllRoles)
+                        {
+                            <div class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       name="SelectedRoleNames"
+                                       value="@role"
+                                       id="role_@role"
+                                       @(Model.SelectedRoleNames.Contains(role) ? "checked" : "") />
+                                <label class="form-check-label" for="role_@role">@role</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save Roles</button>
+            <a asp-action="Users" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+
+    <a asp-action="Users" class="gs-back-link mt-3 d-inline-block">← Back to User Management</a>
+</div>

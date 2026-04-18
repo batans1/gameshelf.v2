@@ -1,0 +1,24 @@
+2026-02-20 22:52:49.083 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-20 22:52:52.131 +02:00 [INF] Starting live deals sync to database...
+2026-02-20 22:52:52.135 +02:00 [INF] Starting sync for platform: Steam
+2026-02-20 22:52:52.208 +02:00 [WRN] Rate limited by API. Keeping existing live deals for Steam
+2026-02-20 22:52:52.210 +02:00 [WRN] Live deal sync for Steam did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 22:52:52.827 +02:00 [INF] Starting sync for platform: GOG
+2026-02-20 22:52:52.844 +02:00 [WRN] Rate limited by API. Keeping existing live deals for GOG
+2026-02-20 22:52:52.846 +02:00 [WRN] Live deal sync for GOG did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 22:52:53.449 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-20 22:52:53.466 +02:00 [WRN] Rate limited by API. Keeping existing live deals for Epic Games
+2026-02-20 22:52:53.468 +02:00 [WRN] Live deal sync for Epic Games did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 22:52:54.071 +02:00 [INF] Live deals sync completed successfully.
+2026-02-20 22:53:09.892 +02:00 [INF] LiveDealSyncBackgroundService started. Initial sync after 3s, then every 1h.
+2026-02-20 22:53:12.947 +02:00 [INF] Starting live deals sync to database...
+2026-02-20 22:53:12.952 +02:00 [INF] Starting sync for platform: Steam
+2026-02-20 22:53:13.016 +02:00 [WRN] Rate limited by API. Keeping existing live deals for Steam
+2026-02-20 22:53:13.018 +02:00 [WRN] Live deal sync for Steam did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 22:53:13.630 +02:00 [INF] Starting sync for platform: GOG
+2026-02-20 22:53:13.646 +02:00 [WRN] Rate limited by API. Keeping existing live deals for GOG
+2026-02-20 22:53:13.649 +02:00 [WRN] Live deal sync for GOG did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 22:53:14.267 +02:00 [INF] Starting sync for platform: Epic Games
+2026-02-20 22:53:14.283 +02:00 [WRN] Rate limited by API. Keeping existing live deals for Epic Games
+2026-02-20 22:53:14.285 +02:00 [WRN] Live deal sync for Epic Games did not fetch any deals (error/rate limit or empty). Keeping existing live deals unchanged.
+2026-02-20 22:53:14.889 +02:00 [INF] Live deals sync completed successfully.

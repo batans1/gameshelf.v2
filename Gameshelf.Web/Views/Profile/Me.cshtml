@@ -1,0 +1,162 @@
+@using GameShelf.Models.ViewModels.Profile
+@model PublicProfileViewModel
+@{
+    ViewData["Title"] = "My Profile";
+    var cart = ViewData["SavingsCart"] as SavingsCartSummaryViewModel ?? new SavingsCartSummaryViewModel();
+}
+
+<div class="container">
+    @if (TempData["ProfileError"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["ProfileError"]</div>
+    }
+    @if (TempData["ProfileSuccess"] != null)
+    {
+        <div class="alert alert-success" role="alert">@TempData["ProfileSuccess"]</div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body d-flex align-items-center gap-3">
+            <img src="@Model.AvatarUrl" alt="@Model.UserName avatar" class="profile-avatar" />
+            <div>
+                <h1 class="gs-page-title mb-1">@Model.UserName</h1>
+                <div class="text-muted">Public reviews: @Model.TextReviewsCount</div>
+                <a asp-action="Public" asp-route-username="@Model.UserName" class="btn btn-sm btn-outline-primary mt-2">View public profile</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Profile Settings</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/profiles/me" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="userName">Username</label>
+                        <input id="userName" name="userName" class="form-control" value="@Model.UserName" minlength="3" maxlength="32" />
+                        <small class="text-muted">Default username is your email. You can change it here. You can sign in with either your email or username.</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="avatarFile">Avatar</label>
+                        <input id="avatarFile" name="avatarFile" type="file" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" />
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">Save Profile</button>
+                </div>
+            </form>
+            @if (Model.HasCustomAvatar)
+            {
+                <form method="post" action="/profiles/me/remove-avatar" class="mt-2">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-secondary">Remove avatar</button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-3" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="savings-tab" data-bs-toggle="tab" data-bs-target="#savings-pane" type="button" role="tab">
+                Savings Cart
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="savings-pane" role="tabpanel">
+            @if (!cart.Items.Any())
+            {
+                <div class="gs-empty-state">
+                    <p class="mb-0 text-muted">Your savings cart is empty.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Platform</th>
+                                <th>Deal Price</th>
+                                <th>Original Price</th>
+                                <th>You Save</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in cart.Items)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.CustomDealId.HasValue)
+                                        {
+                                            <a asp-controller="Platforms"
+                                               asp-action="GameDetails"
+                                               asp-route-customDealId="@item.CustomDealId"
+                                               class="text-decoration-none fw-semibold">
+                                                @item.GameName
+                                            </a>
+                                        }
+                                        else if (!string.IsNullOrWhiteSpace(item.DealId))
+                                        {
+                                            <a asp-controller="Platforms"
+                                               asp-action="GameDetails"
+                                               asp-route-dealId="@item.DealId"
+                                               asp-route-storeName="@item.StoreName"
+                                               class="text-decoration-none fw-semibold">
+                                                @item.GameName
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            @item.GameName
+                                        }
+                                    </td>
+                                    <td>@item.PlatformName</td>
+                                    <td>$@item.DealPrice.ToString("F2")</td>
+                                    <td>$@item.OriginalPrice.ToString("F2")</td>
+                                    <td class="text-success fw-bold">$@item.Savings.ToString("F2")</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-danger remove-cart-item" data-game-deal-id="@item.GameDealId">Remove</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="fw-bold">
+                                <td colspan="2">Total</td>
+                                <td>$@cart.TotalDealPrice.ToString("F2")</td>
+                                <td>$@cart.TotalOriginalPrice.ToString("F2")</td>
+                                <td class="text-success">$@cart.TotalSavings.ToString("F2")</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            document.querySelectorAll('.remove-cart-item').forEach(btn => {
+                btn.addEventListener('click', async function () {
+                    const id = this.getAttribute('data-game-deal-id');
+                    const res = await fetch(`/api/savings-cart/${id}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to remove item from savings cart.');
+                    }
+                });
+            });
+        })();
+    </script>
+}

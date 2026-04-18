@@ -1,0 +1,145 @@
+@model IEnumerable<GameShelf.Models.ViewModels.LiveDeals.LiveDealDto>
+@{
+    ViewData["Title"] = "Deals - " + (ViewData["PlatformName"] ?? "Platform");
+    var platformName = ViewData["PlatformName"] as string ?? "Deals";
+    var platformUrl = ViewData["PlatformUrl"] as string;
+    var platformId = ViewData["PlatformId"] as Guid?;
+    var currentPage = (int)(ViewData["CurrentPage"] ?? 1);
+    var totalPages = (int)(ViewData["TotalPages"] ?? 1);
+    var totalDeals = (int)(ViewData["TotalDeals"] ?? 0);
+    var dealCount = Model?.Count() ?? 0;
+}
+
+<h1 class="gs-page-title">@platformName — Deals</h1>
+<p class="gs-page-subtitle">
+    @if (totalDeals > 0)
+    {
+        <span>@totalDeals discounted games available</span>
+    }
+    else
+    {
+        <span>Live discounted games</span>
+    }
+</p>
+
+@* Filters and Sorting *@
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" asp-action="Deals" asp-route-id="@platformId" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Sort By</label>
+                <select name="sortBy" class="form-select">
+                    <option value="">Discount % (Default)</option>
+                    <option value="price_asc" selected="@(ViewData["SortBy"]?.ToString() == "price_asc")">Price: Low to High</option>
+                    <option value="price_desc" selected="@(ViewData["SortBy"]?.ToString() == "price_desc")">Price: High to Low</option>
+                    <option value="discount" selected="@(ViewData["SortBy"]?.ToString() == "discount")">Discount %</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Min Price (€)</label>
+                <input type="number" name="minPrice" class="form-control" step="0.01" value="@ViewData["MinPrice"]" placeholder="0.00" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Max Price (€)</label>
+                <input type="number" name="maxPrice" class="form-control" step="0.01" value="@ViewData["MaxPrice"]" placeholder="999.99" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Min Discount (%)</label>
+                <input type="number" name="minDiscount" class="form-control" value="@ViewData["MinDiscount"]" placeholder="0" />
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (dealCount == 0)
+{
+    <div class="gs-empty-state">
+        <div class="gs-empty-icon">⏳</div>
+        <h5>Loading deals...</h5>
+        <p class="text-muted mb-2">Deals are being loaded in the background. Please refresh in a few seconds.</p>
+        <button onclick="location.reload()" class="btn btn-primary">Refresh</button>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-4">
+        @foreach (var deal in Model!)
+        {
+            @await Html.PartialAsync("_DealCard", deal)
+        }
+    </div>
+
+    @* Pagination *@
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Deals pagination">
+            <ul class="pagination justify-content-center">
+                @* Previous button *@
+                <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Deals" asp-route-id="@platformId" asp-route-page="@(currentPage - 1)" 
+                       asp-route-sortBy="@ViewData["SortBy"]" asp-route-minPrice="@ViewData["MinPrice"]" 
+                       asp-route-maxPrice="@ViewData["MaxPrice"]" asp-route-minDiscount="@ViewData["MinDiscount"]" 
+>Previous</a>
+                </li>
+
+                @* Page numbers *@
+                @{
+                    var startPage = Math.Max(1, currentPage - 2);
+                    var endPage = Math.Min(totalPages, currentPage + 2);
+                    
+                    if (startPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Deals" asp-route-id="@platformId" asp-route-page="1"
+                               asp-route-sortBy="@ViewData["SortBy"]" asp-route-minPrice="@ViewData["MinPrice"]" 
+                               asp-route-maxPrice="@ViewData["MaxPrice"]" asp-route-minDiscount="@ViewData["MinDiscount"]" 
+>1</a>
+                        </li>
+                        if (startPage > 2)
+                        {
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        }
+                    }
+                    
+                    for (var i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Deals" asp-route-id="@platformId" asp-route-page="@i"
+                               asp-route-sortBy="@ViewData["SortBy"]" asp-route-minPrice="@ViewData["MinPrice"]" 
+                               asp-route-maxPrice="@ViewData["MaxPrice"]" asp-route-minDiscount="@ViewData["MinDiscount"]" 
+>@i</a>
+                        </li>
+                    }
+                    
+                    if (endPage < totalPages)
+                    {
+                        if (endPage < totalPages - 1)
+                        {
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Deals" asp-route-id="@platformId" asp-route-page="@totalPages"
+                               asp-route-sortBy="@ViewData["SortBy"]" asp-route-minPrice="@ViewData["MinPrice"]" 
+                               asp-route-maxPrice="@ViewData["MaxPrice"]" asp-route-minDiscount="@ViewData["MinDiscount"]" 
+>@totalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Next button *@
+                <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Deals" asp-route-id="@platformId" asp-route-page="@(currentPage + 1)"
+                       asp-route-sortBy="@ViewData["SortBy"]" asp-route-minPrice="@ViewData["MinPrice"]" 
+                       asp-route-maxPrice="@ViewData["MaxPrice"]" asp-route-minDiscount="@ViewData["MinDiscount"]" 
+>Next</a>
+                </li>
+            </ul>
+        </nav>
+        <p class="text-center text-muted small">Page @currentPage of @totalPages</p>
+    }
+}
+
+<a asp-action="Index" class="gs-back-link">← Back to platforms</a>
